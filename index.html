@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roast My Bio 🔥</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 620px;
+      width: 100%;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+    
+    .subtitle {
+      color: #888;
+      margin-bottom: 30px;
+      font-size: 1rem;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 140px;
+      padding: 14px;
+      font-size: 15px;
+      border-radius: 10px;
+      background: #1a1a1a;
+      color: white;
+      border: 1px solid #333;
+      resize: none;
+      outline: none;
+    }
+    
+    textarea:focus {
+      border-color: #ff4500;
+    }
+    
+    button {
+      width: 100%;
+      background: #ff4500;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background 0.2s;
+    }
+    
+    button:hover { background: #e03d00; }
+    button:disabled { background: #555; cursor: not-allowed; }
+    
+    #result {
+      margin-top: 24px;
+      padding: 20px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      border-left: 4px solid #ff4500;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      display: none;
+    }
+    
+    .loading {
+      color: #888;
+      font-style: italic;
+    }
+    
+    .error {
+      color: #ff6b6b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔥 Roast My Bio</h1>
+    <p class="subtitle">Paste your LinkedIn or Twitter bio. The AI will roast you (nicely).</p>
+    
+    <textarea 
+      id="bio" 
+      placeholder="e.g. Passionate entrepreneur, dog dad, and coffee enthusiast. Building the future one hustle at a time. 🚀"
+    ></textarea>
+    
+    <button id="btn" onclick="roastMe()">Roast Me 🔥</button>
+    
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const API_URL = 'YOUR_API_GATEWAY_URL/roast';
+    
+    async function roastMe() {
+      const bio = document.getElementById('bio').value.trim();
+      const resultDiv = document.getElementById('result');
+      const btn = document.getElementById('btn');
+      
+      if (!bio) {
+        alert('Paste your bio first!');
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.textContent = 'Roasting... 🔥';
+      resultDiv.style.display = 'block';
+      resultDiv.className = 'loading';
+      resultDiv.innerHTML = '🎤 The AI is preparing your roast...';
+      
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bio })
+        });
+        
+        const data = await response.json();
+        
+        if (data.error) {
+          resultDiv.className = 'error';
+          resultDiv.innerHTML = '❌ ' + data.error;
+        } else {
+          resultDiv.className = '';
+          resultDiv.innerHTML = '🎤 ' + data.roast;
+        }
+        
+      } catch (err) {
+        resultDiv.className = 'error';
+        resultDiv.innerHTML = '❌ Something went wrong. Try again.';
+      }
+      
+      btn.disabled = false;
+      btn.textContent = 'Roast Me Again 🔥';
+    }
+  </script>
+</body>
+</html>
