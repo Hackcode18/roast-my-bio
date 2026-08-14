@@ -4,7 +4,7 @@ An AI-powered web app that roasts your LinkedIn or Twitter bio in 3 funny senten
 
 ## Live Demo
 
-[Click here to try it]([YOUR_S3_URL](https://builder.aws.com/content/3HtHa7RuikJRz53cKv6Fe5Ro5b9/weekend-creative-challenge-roast-my-bio))
+[Click here to try it]([https://builder.aws.com/content/3HtHa7RuikJRz53cKv6Fe5Ro5b9/weekend-creative-challenge-roast-my-bio])
 
 ---
 
